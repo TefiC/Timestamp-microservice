@@ -3,7 +3,7 @@ var app = express();
 
 var moment = require("moment");
 
-var date = 'December%20,%202015'; //process.argv[2];
+var date = process.argv[2]; //'December%20,%202015'; //process.argv[2];
 
 app.get('/', function (req, res) {
     
@@ -30,8 +30,8 @@ app.get('/', function (req, res) {
    
 });
 
-app.listen(8080, function () {
-  console.log('Example app listening on port 8080!');
+app.listen(process.env.PORT, function () {
+  console.log('Example app listening!');
 });
 
 
