@@ -13,6 +13,8 @@ var app = express();
 
 app.get('/*', function (req, res) {
 	
+	res.writeHead(200, {'content-type':'application/JSON'});
+	
 	//Extract parameters from URL
 	var date = req.params[0];
 	var month = date.split(' ')[0];
