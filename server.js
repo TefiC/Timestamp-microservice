@@ -56,7 +56,7 @@ app.get('/*', function (req, res) {
 		"natural" : naturalTime
 	}
 	
-	res.send(JSON.stringify(JSONres));
+	res.end(JSON.stringify(JSONres));
    
 });
 
