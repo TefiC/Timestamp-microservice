@@ -6,8 +6,9 @@ var url = require("url");
 var moment = require("moment");
 
 /*
- * A
+ * App
  */
+ 
 var app = express();
 
 app.get('/*', function (req, res) {
@@ -20,11 +21,11 @@ app.get('/*', function (req, res) {
 	var isValid = moment(date, 'MMM DD, YYYY').isValid(); 
 	
 	// If the format is valid and the month is a string
-	if (isValid == true && isNaN(month)) {
+	if (isValid == true) {
 		
 		// If the date is a string, split by the space character
 		// and join them with a space, then calculate the date in UNIX
-		if (isNaN(date) == true) {
+		if (isNaN(date.split(' ')[0]) == true) {
 			
 			var naturalTime = date;
 			
