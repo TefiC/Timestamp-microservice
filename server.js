@@ -3,19 +3,30 @@ var app = express();
 
 var moment = require("moment");
 
+var date = 'December%20,%202015'; //process.argv[2];
+
 app.get('/', function (req, res) {
     
-    var isValid = moment('December%2015,%202015', 'MMMM%20DD,%20YYYY', true).isValid(); 
+    var isValid = moment(date, 'MMMM%20DD,%20YYYY', true).isValid(); 
     
     if (isValid) {
-        res.send('Hello World!' + isValid.toString());
+        
+        var naturalTime = date.split("%20").join(' ');
+        var unixTime = new Date(naturalTime).getTime();
+        
     } else {
-        var JSONres = {
-            "unix" : null,
-            "natural" : null 
-        }
-        res.send(JSON.stringify(JSONres));
+        
+        naturalTime = null;
+        unixTime = null;
+        
     }
+    
+    var JSONres = {
+        "unix" : unixTime,
+        "natural" : naturalTime
+    }
+    
+    res.send(JSON.stringify(JSONres));
    
 });
 
