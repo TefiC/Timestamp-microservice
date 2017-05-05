@@ -19,11 +19,12 @@ app.get('/*', function (req, res) {
 	var date = req.params[0];
 	var month = date.split(' ')[0];
 	
-	//Check if the date format is valid 
-	var isValid = moment(date, 'MMM DD, YYYY').isValid(); 
+	//Check if the date format is valid in strict mode to match either one of the 
+	// specified formats
+	var isValid = moment(date, ['MMM DD, YYYY', 'MMM DD YYYY', 'MMMM DD, YYYY', 'MMMM DD YYYY'], true).isValid(); 
 	
-	// If the format is valid and the month is a string
-	if (isValid == true) {
+	// If the format is valid and the month is a valid string or a number, in which case is unix format
+	if (isValid == true || !isNaN(month)) {
 		
 		// If the date is a string, split by the space character
 		// and join them with a space, then calculate the date in UNIX
