@@ -8,7 +8,6 @@ var moment = require("moment");
 /*
  * App
  */
- 
 var app = express();
 
 app.get('/*', function (req, res) {
@@ -19,45 +18,53 @@ app.get('/*', function (req, res) {
 	var date = req.params[0];
 	var month = date.split(' ')[0];
 	
-	//Check if the date format is valid in strict mode to match either one of the 
-	// specified formats
-	var isValid = moment(date, ['MMM DD, YYYY', 'MMM DD YYYY', 'MMMM DD, YYYY', 'MMMM DD YYYY'], true).isValid(); 
-	
-	// If the format is valid and the month is a valid string or a number, in which case is unix format
-	if (isValid == true || !isNaN(month)) {
+	//If the query is not empty 
+	if (date.length) {
 		
-		// If the date is a string, split by the space character
-		// and join them with a space, then calculate the date in UNIX
-		if (isNaN(date.split(' ')[0]) == true) {
+		//Check if the date format is valid in strict mode to match either one of the 
+		// specified formats
+		var isValid = moment(date, ['MMM DD, YYYY', 'MMM DD YYYY', 'MMMM DD, YYYY', 'MMMM DD YYYY'], true).isValid(); 
+
+		// If the format is valid and the month is a valid string or a number, in which case is unix format
+		if (isValid == true || !isNaN(month)){
 			
-			var naturalTime = date;
-			
-			//Get the unix time and convert it to seconds
-			var unixTime = (new Date(naturalTime).getTime())/1000;
-			
-		// Else, if its a number, a unix format,
-		// convert the unix time to the right format
+			// If the date is a string, split by the space character
+			// and join them with a space, then calculate the date in UNIX
+			if (isNaN(date.split(' ')[0]) == true) {
+				
+				var naturalTime = date;
+				
+				//Get the unix time and convert it to seconds
+				var unixTime = (new Date(naturalTime).getTime())/1000;
+				
+			// Else, if its a number, a unix format,
+			// convert the unix time to the right format
+			} else {
+				
+				var unixTime = date;
+				var naturalTime = moment.unix(unixTime).format("MMMM DD, YYYY");
+			}
+		  
+		//Else, if the format is not valid 
 		} else {
 			
-			var unixTime = date;
-			var naturalTime = moment.unix(unixTime).format("MMMM DD, YYYY");
+			var naturalTime = null;
+			var unixTime = null;
+			
 		}
-	  
-	//Else, if the format is not valid 
+		
+		//Create the JSON object, and then send it back to the client
+		var JSONres = {
+			"unix" : unixTime,
+			"natural" : naturalTime
+		}
+		
+		res.end(JSON.stringify(JSONres));
+		
+	//Else, if the input is empty (there is no query)
 	} else {
-		
-		var naturalTime = null;
-		var unixTime = null;
-		
+		res.end()
 	}
-	
-	//Create the JSON object, and then send it back to the client
-	var JSONres = {
-		"unix" : unixTime,
-		"natural" : naturalTime
-	}
-	
-	res.end(JSON.stringify(JSONres));
    
 });
 
