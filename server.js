@@ -12,14 +12,14 @@ var app = express();
 
 app.get('/*', function (req, res) {
 	
-	res.writeHead(200, {'content-type':'application/JSON'});
-	
 	//Extract parameters from URL
 	var date = req.params[0];
 	var month = date.split(' ')[0];
 	
 	//If the query is not empty 
 	if (date.length) {
+		
+		res.writeHead(200, {'content-type':'application/JSON'});
 		
 		//Check if the date format is valid in strict mode to match either one of the 
 		// specified formats
@@ -63,7 +63,7 @@ app.get('/*', function (req, res) {
 		
 	//Else, if the input is empty (there is no query)
 	} else {
-		res.end()
+		res.sendFile(__dirname + '/index.html');
 	}
    
 });
